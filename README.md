@@ -57,3 +57,10 @@ same instance raises `LockError` rather than succeeding.
 Unlinking the lock file while a lock is held does not release the lock.  The
 lock follows the open file description, so a second `FileLock` opened against
 the same path still blocks until the first is released.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
